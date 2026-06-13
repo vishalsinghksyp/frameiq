@@ -1,3 +1,13 @@
+---
+title: FrameIQ Backend
+emoji: 🎬
+colorFrom: indigo
+colorTo: purple
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # FrameIQ — Backend
 
 AI-powered video analysis pipeline: turn any YouTube video or local video/audio file into a transcript, English translation, structured summary (title, key points, action items, decisions, open questions), and a chat-ready RAG knowledge base.
