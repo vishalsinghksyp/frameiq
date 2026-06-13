@@ -1,0 +1,27 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+.env
+.env.local
+
+# Next.js
+frontend/node_modules/
+frontend/.next/
+
+# Python cache
+.pytest_cache/
+
+# Uploads & generated data
+uploads/
+downloads/
+vector_db/
+
+# OS files
+.DS_Store

@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(20px, -30px);
+    opacity: 0.6;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  font-family: "Syne", sans-serif;
+  font-weight: 700;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.markdown-content h1 {
+  font-size: 1.4rem;
+}
+.markdown-content h2 {
+  font-size: 1.2rem;
+}
+.markdown-content h3 {
+  font-size: 1.05rem;
+}
+
+.markdown-content p {
+  margin-bottom: 12px;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin-bottom: 12px;
+  padding-left: 24px;
+}
+
+.markdown-content li {
+  margin-bottom: 6px;
+}
+
+.markdown-content strong {
+  color: #818cf8;
+  font-weight: 600;
+}
+
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 20px 0;
+}
