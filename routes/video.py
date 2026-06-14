@@ -41,9 +41,17 @@ def run_pipeline(job_id: str, source: str, is_file: bool = False):
         # For YouTube URLs: try captions first (fast, no audio download needed)
         if not is_file:
             transcript_raw = get_youtube_transcript(source)
+            if transcript_raw is None:
+                # YouTube is network-blocked on cloud hosting — fail fast with helpful message
+                update_job(
+                    job_id,
+                    status=JobStatus.FAILED,
+                    error="YouTube processing is unavailable on the hosted version due to network restrictions. Please download the video and use the file upload option instead."
+                )
+                return
 
         if transcript_raw is None:
-            # Fallback: download audio + whisper transcription
+            # File upload path — download audio + whisper transcription
             chunks = process_input(source)
             update_job(job_id, step="transcribing")
             transcript_raw = transcribe_all(chunks)
