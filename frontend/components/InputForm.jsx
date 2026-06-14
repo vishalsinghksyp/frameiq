@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
-import { Link2, Upload, Loader2 } from "lucide-react";
+import { Link2, Upload, Loader2, AlertTriangle } from "lucide-react";
 import toast from "react-hot-toast";
+
 const isValidYoutubeUrl = (url) => {
   const pattern =
     /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|shorts\/)|youtu\.be\/)[\w-]{11}/;
@@ -9,7 +10,7 @@ const isValidYoutubeUrl = (url) => {
 };
 
 export default function InputForm({ onSubmit, loading, dark = true }) {
-  const [mode, setMode] = useState("url"); // "url" | "file"
+  const [mode, setMode] = useState("url");
   const [url, setUrl] = useState("");
   const [file, setFile] = useState(null);
 
@@ -88,24 +89,58 @@ export default function InputForm({ onSubmit, loading, dark = true }) {
 
       <form onSubmit={handleSubmit}>
         {mode === "url" ? (
-          <input
-            type="text"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://youtu.be/..."
-            disabled={loading}
-            style={{
-              width: "100%",
-              padding: "16px 20px",
-              borderRadius: 14,
-              border: `1px solid ${border}`,
-              background: dark ? "rgba(0,0,0,0.3)" : "#fff",
-              color: heading,
-              fontSize: 14,
-              outline: "none",
-              marginBottom: 16,
-            }}
-          />
+          <>
+            <input
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="https://youtu.be/..."
+              disabled={loading}
+              style={{
+                width: "100%",
+                padding: "16px 20px",
+                borderRadius: 14,
+                border: `1px solid ${border}`,
+                background: dark ? "rgba(0,0,0,0.3)" : "#fff",
+                color: heading,
+                fontSize: 14,
+                outline: "none",
+                marginBottom: 10,
+                boxSizing: "border-box",
+              }}
+            />
+            {/* ✅ YouTube warning notice */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: 8,
+                background: "rgba(245,158,11,0.08)",
+                border: "1px solid rgba(245,158,11,0.2)",
+                borderRadius: 10,
+                padding: "10px 14px",
+                marginBottom: 16,
+              }}
+            >
+              <AlertTriangle
+                size={13}
+                color="#f59e0b"
+                style={{ flexShrink: 0, marginTop: 1 }}
+              />
+              <p
+                style={{
+                  fontSize: 11,
+                  color: "#f59e0b",
+                  margin: 0,
+                  lineHeight: 1.6,
+                }}
+              >
+                YouTube URLs work if the video has auto-generated captions. If
+                processing fails, download the video and use{" "}
+                <strong>Upload File</strong> instead.
+              </p>
+            </div>
+          </>
         ) : (
           <label
             style={{
