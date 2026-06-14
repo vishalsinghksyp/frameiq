@@ -312,7 +312,7 @@ export default function InputForm({
                         color: "#fbbf24",
                       }}
                     >
-                      Know more →
+                      Know more about this problem →
                     </span>
                   </p>
                 </div>
