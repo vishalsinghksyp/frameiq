@@ -5,7 +5,7 @@ import shutil
 import time
 import traceback
 
-from utils.audio_processor import process_input
+from utils.audio_processor import process_input, get_youtube_transcript
 from core.transcriber import transcribe_all
 from core.translator import translate_to_english
 from core.summarize import summarize, generate_title, extract_key_points
@@ -35,10 +35,18 @@ def run_pipeline(job_id: str, source: str, is_file: bool = False):
     """The actual pipeline — runs in background."""
     try:
         update_job(job_id, status=JobStatus.PROCESSING, step="processing_audio")
-        chunks = process_input(source)
 
-        update_job(job_id, step="transcribing")
-        transcript_raw = transcribe_all(chunks)
+        transcript_raw = None
+
+        # For YouTube URLs: try captions first (fast, no audio download needed)
+        if not is_file:
+            transcript_raw = get_youtube_transcript(source)
+
+        if transcript_raw is None:
+            # Fallback: download audio + whisper transcription
+            chunks = process_input(source)
+            update_job(job_id, step="transcribing")
+            transcript_raw = transcribe_all(chunks)
 
         update_job(job_id, step="translating")
         transcript_en = translate_to_english(transcript_raw)
