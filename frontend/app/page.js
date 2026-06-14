@@ -18,10 +18,12 @@ export default function Home() {
   const [jobId, setJobId] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [urlFailed, setUrlFailed] = useState(false);
 
   const handleSubmit = async (data) => {
     setLoading(true);
     setResult(null);
+    setUrlFailed(false);
     try {
       const res =
         data.type === "url"
@@ -44,12 +46,20 @@ export default function Home() {
     toast.error(err);
     setLoading(false);
     setJobId(null);
+    if (
+      err.toLowerCase().includes("youtube") ||
+      err.toLowerCase().includes("network") ||
+      err.toLowerCase().includes("caption")
+    ) {
+      setUrlFailed(true);
+    }
   };
 
   const handleReset = () => {
     setJobId(null);
     setResult(null);
     setLoading(false);
+    setUrlFailed(false);
   };
 
   const border = dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
@@ -69,6 +79,7 @@ export default function Home() {
               fontFamily: "'Syne', sans-serif",
               fontSize: "2.5rem",
               fontWeight: 800,
+              color: dark ? "#e2e8f0" : "#1a1a2e",
             }}
           >
             Frame
@@ -82,13 +93,12 @@ export default function Home() {
               IQ
             </span>
           </h1>
-          <p style={{ color: "#94a3b8", marginTop: 8 }}>
+          <p style={{ color: dark ? "#94a3b8" : "#64748b", marginTop: 8 }}>
             AI-powered video summarizer & chat
           </p>
         </div>
 
         <div style={{ display: "flex", gap: 10, marginTop: 8, flexShrink: 0 }}>
-          {/* Theme toggle */}
           <button
             onClick={toggle}
             style={{
@@ -108,7 +118,6 @@ export default function Home() {
             {dark ? <Sun size={16} /> : <Moon size={16} />}
           </button>
 
-          {/* New Analysis */}
           {result && (
             <button
               onClick={handleReset}
@@ -145,7 +154,12 @@ export default function Home() {
       <div style={{ marginBottom: 32 }} />
 
       {!jobId && (
-        <InputForm onSubmit={handleSubmit} loading={loading} dark={dark} />
+        <InputForm
+          onSubmit={handleSubmit}
+          loading={loading}
+          dark={dark}
+          urlFailed={urlFailed}
+        />
       )}
 
       {jobId && !result && (

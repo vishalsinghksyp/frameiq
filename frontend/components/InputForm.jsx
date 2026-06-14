@@ -9,7 +9,12 @@ const isValidYoutubeUrl = (url) => {
   return pattern.test(url.trim());
 };
 
-export default function InputForm({ onSubmit, loading, dark = true }) {
+export default function InputForm({
+  onSubmit,
+  loading,
+  dark = true,
+  urlFailed = false,
+}) {
   const [mode, setMode] = useState("url");
   const [url, setUrl] = useState("");
   const [file, setFile] = useState(null);
@@ -100,46 +105,57 @@ export default function InputForm({ onSubmit, loading, dark = true }) {
                 width: "100%",
                 padding: "16px 20px",
                 borderRadius: 14,
-                border: `1px solid ${border}`,
+                border: `1px solid ${urlFailed ? "rgba(245,158,11,0.4)" : border}`,
                 background: dark ? "rgba(0,0,0,0.3)" : "#fff",
                 color: heading,
                 fontSize: 14,
                 outline: "none",
                 marginBottom: 10,
                 boxSizing: "border-box",
+                transition: "border-color 0.3s",
               }}
             />
-            {/* ✅ YouTube warning notice */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                gap: 8,
-                background: "rgba(245,158,11,0.08)",
-                border: "1px solid rgba(245,158,11,0.2)",
-                borderRadius: 10,
-                padding: "10px 14px",
-                marginBottom: 16,
-              }}
-            >
-              <AlertTriangle
-                size={13}
-                color="#f59e0b"
-                style={{ flexShrink: 0, marginTop: 1 }}
-              />
-              <p
+
+            {/* Only show after failure */}
+            {urlFailed && (
+              <div
                 style={{
-                  fontSize: 11,
-                  color: "#f59e0b",
-                  margin: 0,
-                  lineHeight: 1.6,
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: 8,
+                  background: "rgba(245,158,11,0.08)",
+                  border: "1px solid rgba(245,158,11,0.2)",
+                  borderRadius: 10,
+                  padding: "10px 14px",
+                  marginBottom: 16,
+                  animation: "fadeInUp 0.3s ease",
                 }}
               >
-                YouTube URLs work if the video has auto-generated captions. If
-                processing fails, download the video and use{" "}
-                <strong>Upload File</strong> instead.
-              </p>
-            </div>
+                <AlertTriangle
+                  size={13}
+                  color="#f59e0b"
+                  style={{ flexShrink: 0, marginTop: 1 }}
+                />
+                <p
+                  style={{
+                    fontSize: 11,
+                    color: "#f59e0b",
+                    margin: 0,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  YouTube processing failed — the video may not have captions.
+                  Try{" "}
+                  <strong
+                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                    onClick={() => setMode("file")}
+                  >
+                    Upload File
+                  </strong>{" "}
+                  instead.
+                </p>
+              </div>
+            )}
           </>
         ) : (
           <label
